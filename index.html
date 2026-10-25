@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vesivuoto-valvonta | IoT-dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="app">
+
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-icon">💧</span>
+        <div>
+          <h1>Vesivuotovalvonta</h1>
+          <p class="subtitle">Pico W - ThingSpeak - reaaliaikainen seuranta</p>
+        </div>
+      </div>
+      <div class="status-pill" id="connectionPill">
+        <span class="dot" id="connectionDot"></span>
+        <span id="connectionText">Yhdistetään…</span>
+      </div>
+    </header>
+
+    <main>
+
+      <!----alert banneri -->
+      <div class="stale-banner" id="staleBanner" hidden>
+        <span class="alert-icon">📡</span>
+        <span id="staleMessage">Ei reaaliaikaista dataa</span>
+      </div>
+      <div class="alert-banner" id="alertBanner" hidden>
+        <span class="alert-icon">⚠️</span>
+        <span id="alertMessage">Hälytys</span>
+      </div>
+
+      <!-- lukemat -->
+      <section class="cards">
+        <article class="card" id="card-temp">
+          <div class="card-head">
+            <span class="card-icon">🌡️</span>
+            <span class="card-title">Lämpötila</span>
+          </div>
+          <div class="card-value"><span id="tempValue">--</span><span class="unit">°C</span></div>
+          <div class="card-foot">
+            <span class="trend" id="tempTrend">-</span>
+            <span class="sep">&middot;</span>
+            <span id="tempTime">--:--:--</span>
+          </div>
+        </article>
+
+        <article class="card" id="card-humidity">
+          <div class="card-head">
+            <span class="card-icon">💦</span>
+            <span class="card-title">Ilmankosteus</span>
+          </div>
+          <div class="card-value"><span id="humValue">--</span><span class="unit">%</span></div>
+          <div class="card-foot">
+            <span class="trend" id="humTrend">-</span>
+            <span class="sep">&middot;</span>
+            <span id="humTime">--:--:--</span>
+          </div>
+        </article>
+
+        <article class="card" id="card-water">
+          <div class="card-head">
+            <span class="card-icon">🌊</span>
+            <span class="card-title">Vesikosketus(VMA303)</span>
+          </div>
+          <div class="card-value"><span id="waterValue">--</span><span class="unit">%</span></div>
+          <div class="card-foot">
+            <span class="trend" id="waterTrend">–</span>
+            <span class="sep">&middot;</span>
+            <span id="waterTime">--:--:--</span>
+          </div>
+        </article>
+
+        <article class="card card-status" id="card-status">
+          <div class="card-head">
+            <span class="card-icon">🟢</span>
+            <span class="card-title">Järjestelmän tila</span>
+          </div>
+          <div class="card-value status-value" id="systemStatus">OK</div>
+          <div class="card-foot">
+            <span id="lastUpdated">Päivitetty: --</span>
+          </div>
+        </article>
+      </section>
+
+      <!-- Chartit--->
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Lämpötila ja kosteus</h2>
+          <div class="range-buttons" data-target="chart_th">
+            <button class="range-btn active" data-range="24">1 vrk</button>
+            <button class="range-btn" data-range="all">Koko historia</button>
+          </div>
+        </div>
+        <div id="chart_th" class="chart"></div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Vesikosketus(VMA303)</h2>
+          <div class="range-buttons" data-target="chart_water">
+            <button class="range-btn active" data-range="24">1 vrk</button>
+            <button class="range-btn" data-range="all">Koko historia</button>
+          </div>
+
+        </div>
+        <div id="chart_water" class="chart"></div>
+      </section>
+
+      <!-- viimeisimmätlukemat -->
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Viimeisimmät lukemat</h2>
+        </div>
+        <div class="table-wrap">
+          <table id="readingsTable">
+            <thead>
+              <tr>
+                <th>Päivä ja aika</th>
+                <th>Lämpötila (°C)</th>
+                <th>Kosteus (%)</th>
+                <th>Vedenpinta (%)</th>
+                <th>Tila</th>
+              </tr>
+            </thead>
+            <tbody id="readingsBody">
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+
+
+
+  </div>
+
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>
